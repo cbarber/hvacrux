@@ -20,7 +20,7 @@
           };
           rustToolchain = pkgs.pkgsBuildHost.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
           nativeBuildInputs = with pkgs; [ rustToolchain pkg-config ];
-          buildInputs = with pkgs; [ openssl ];
+          buildInputs = with pkgs; [ rust-analyzer cargo-leptos openssl ];
         in
         with pkgs;
         {
