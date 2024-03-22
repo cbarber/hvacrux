@@ -2,6 +2,8 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
+use crate::building::{Floor, Room};
+
 #[component]
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
@@ -13,7 +15,7 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/hvacrux.css"/>
 
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text="HVACrux"/>
 
         // content for this welcome page
         <Router>
@@ -30,13 +32,44 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let (count, set_count) = create_signal(0);
-    let on_click = move |_| set_count.update(|count| *count += 1);
-
     view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <Floors floors=&vec![
+            Floor {
+            rooms: vec![
+                Room {
+                    length: 5.0,
+                    width: 5.0,
+                    height: 3.0,
+                    window_area: 2.0,
+                    num_people: 2,
+                    lighting_load: 100.0,
+                    appliance_load: 200.0,
+                },
+            ],
+            },
+            Floor {
+            rooms: vec![
+                Room {
+                    length: 6.0,
+                    width: 5.0,
+                    height: 3.0,
+                    window_area: 2.0,
+                    num_people: 2,
+                    lighting_load: 100.0,
+                    appliance_load: 200.0,
+                },
+                Room {
+                    length: 5.0,
+                    width: 5.0,
+                    height: 3.0,
+                    window_area: 2.0,
+                    num_people: 2,
+                    lighting_load: 123.4,
+                    appliance_load: 200.2,
+                },
+            ],
+            },
+        ]/>
     }
 }
 
@@ -59,5 +92,76 @@ fn NotFound() -> impl IntoView {
 
     view! {
         <h1>"Not Found"</h1>
+    }
+}
+
+#[component]
+fn Floors<'a>(floors: &'a Vec<Floor>) -> impl IntoView {
+    // let form_data = use_context().expect("No FormData found");
+
+    view! {
+        <fieldset>
+            <legend>"Floors"</legend>
+            <div>
+                <input type="number" value={floors.len()} min="1" placeholder="Number of floors" />
+            </div>
+            <div>
+                {floors.iter().enumerate().map(|(index, floor)| { view! { <RoomList floor=&floor index=index /> }}).collect_view()}
+            </div>
+        </fieldset>
+    }
+}
+
+#[component]
+pub fn RoomList<'a>(floor: &'a Floor, index: usize) -> impl IntoView {
+    // let form_data = use_context().expect("No FormData found");
+
+    view! {
+        <fieldset>
+            <legend>{"Floor #"} {index + 1}</legend>
+            <div>
+                <input type="number" min="1" value={floor.rooms.len()} placeholder="Number of rooms" />
+            </div>
+            <div>
+                {floor.rooms.iter().enumerate().map(|(index, room)| { view! { <RoomDetails room=&room index=index /> }}).collect_view()}
+            </div>
+        </fieldset>
+    }
+}
+
+#[component]
+pub fn RoomDetails<'a>(room: &'a Room, index: usize) -> impl IntoView {
+    view! {
+        <fieldset>
+            <legend>{"Room #"} {index + 1}</legend>
+            <div>
+                <label>"Length (m)"</label>
+                <input type="number" step="0.01" value={room.length} placeholder="Length" />
+            </div>
+            <div>
+                <label>"Width (m)"</label>
+                <input type="number" step="0.01" value={room.width} placeholder="Width" />
+            </div>
+            <div>
+                <label>"Height (m)"</label>
+                <input type="number" step="0.01" value={room.height} placeholder="Height" />
+            </div>
+            <div>
+                <label>"Window Area (m²)"</label>
+                <input type="number" step="0.01" value={room.window_area} placeholder="Window Area" />
+            </div>
+            <div>
+                <label>"Number of People"</label>
+                <input type="number" min="0" value={room.num_people} placeholder="Number of People" />
+            </div>
+            <div>
+                <label>"Lighting Load (W)"</label>
+                <input type="number" min="0" value={room.lighting_load} placeholder="Lighting Load" />
+            </div>
+            <div>
+                <label>"Appliance Load (W)"</label>
+                <input type="number" min="0" value={room.appliance_load} placeholder="Appliance Load" />
+            </div>
+        </fieldset>
     }
 }
