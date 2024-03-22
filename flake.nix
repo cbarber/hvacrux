@@ -35,7 +35,7 @@
 
             doCheck = false;
           };
-          buildInputs = with pkgs; [ rust-analyzer cargoLeptos openssl mold clang ];
+          buildInputs = with pkgs; [ rust-analyzer cargoLeptos openssl mold clang tailwindcss ];
         in
         with pkgs;
         {
