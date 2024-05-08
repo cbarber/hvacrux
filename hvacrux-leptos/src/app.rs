@@ -2,7 +2,7 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-use crate::building::{Floor, Room};
+use hvacrux_lib::building::{Floor, Room};
 
 #[component]
 pub fn App() -> impl IntoView {

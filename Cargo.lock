@@ -988,12 +988,17 @@ dependencies = [
  "actix-web",
  "console_error_panic_hook",
  "http 1.1.0",
+ "hvacrux-lib",
  "leptos",
  "leptos_actix",
  "leptos_meta",
  "leptos_router",
  "wasm-bindgen",
 ]
+
+[[package]]
+name = "hvacrux-lib"
+version = "0.1.0"
 
 [[package]]
 name = "ident_case"

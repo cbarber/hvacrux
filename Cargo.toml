@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
 members = [
-    "hvacrux-leptos",
+    "hvacrux-leptos", "hvacrux-lib",
 ]

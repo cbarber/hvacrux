@@ -66,13 +66,13 @@ impl WindowMaterial {
 }
 
 pub struct Room {
-    pub(crate) length: f64, // in meters
-    pub(crate) width: f64,  // in meters
-    pub(crate) height: f64, // in meters
-    pub(crate) window_area: f64, // in square meters
-    pub(crate) num_people: u32,
-    pub(crate) lighting_load: f64, // in watts
-    pub(crate) appliance_load: f64, // in watts
+    pub length: f64, // in meters
+    pub width: f64,  // in meters
+    pub height: f64, // in meters
+    pub window_area: f64, // in square meters
+    pub num_people: u32,
+    pub lighting_load: f64, // in watts
+    pub appliance_load: f64, // in watts
 }
 
 pub struct Floor {
