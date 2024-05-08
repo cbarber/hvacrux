@@ -35,7 +35,7 @@
 
             # use generated package-lock.json as upstream does not provide one
             postPatch = ''
-              cp ${./daisyui-package-lock.json} ./package-lock.json
+              cp ${./hvacrux-leptos/daisyui-package-lock.json} ./package-lock.json
             '';
 
             # The prepack script runs the build script, which we'd rather do in the build phase.
@@ -55,7 +55,7 @@
             ];
           });
 
-          nativeBuildInputs = with pkgs; [ rustToolchain pkg-config tailwindCss ];
+          nativeBuildInputs = with pkgs; [ rustToolchain pkg-config rust-analyzer tailwindCss ];
 
           cargoLeptos = pkgs.rustPlatform.buildRustPackage rec {
             pname = "cargo-leptos";
@@ -73,7 +73,7 @@
             doCheck = false;
           };
 
-          buildInputs = with pkgs; [ rust-analyzer cargoLeptos openssl mold clang ];
+          buildInputs = with pkgs; [ cargoLeptos openssl mold clang ];
         in
         with pkgs;
         {

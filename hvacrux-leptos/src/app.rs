@@ -32,22 +32,19 @@ pub fn App() -> impl IntoView {
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    view! {
-        <Floors floors=&vec![
-            Floor {
-            rooms: vec![
-                Room {
-                    length: 5.0,
-                    width: 5.0,
-                    height: 3.0,
-                    window_area: 2.0,
-                    num_people: 2,
-                    lighting_load: 100.0,
-                    appliance_load: 200.0,
-                },
-            ],
-            },
-            Floor {
+    let floors = vec![
+        Floor {
+            rooms: vec![Room {
+                length: 5.0,
+                width: 5.0,
+                height: 3.0,
+                window_area: 2.0,
+                num_people: 2,
+                lighting_load: 100.0,
+                appliance_load: 200.0,
+            }],
+        },
+        Floor {
             rooms: vec![
                 Room {
                     length: 6.0,
@@ -68,8 +65,10 @@ fn HomePage() -> impl IntoView {
                     appliance_load: 200.2,
                 },
             ],
-            },
-        ]/>
+        },
+    ];
+    view! {
+        <Floors floors=&floors />
     }
 }
 
