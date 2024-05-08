@@ -19,7 +19,44 @@
             inherit system overlays;
           };
           rustToolchain = pkgs.pkgsBuildHost.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-          nativeBuildInputs = with pkgs; [ rustToolchain pkg-config ];
+
+          daisyui = pkgs.buildNpmPackage rec {
+            pname = "daisyui";
+            version = "4.6.3";
+
+            src = pkgs.fetchFromGitHub {
+              owner = "saadeghi";
+              repo = pname;
+              rev = "v${version}";
+              hash = "sha256-O1YZF2mMNWnoj6sRrbQKJBTqlQ+NIcpZf0kawDDeVxM=";
+            };
+
+            npmDepsHash = "sha256-Y+poto5nGcFgBHcCl6MVwUeBMAnKv+pgxtODXnCSd3U=";
+
+            # use generated package-lock.json as upstream does not provide one
+            postPatch = ''
+              cp ${./daisyui-package-lock.json} ./package-lock.json
+            '';
+
+            # The prepack script runs the build script, which we'd rather do in the build phase.
+            npmPackFlags = ["--ignore-scripts"];
+
+            NODE_OPTIONS = "--openssl-legacy-provider";
+          };
+
+          tailwindCss = pkgs.nodePackages.tailwindcss.overrideAttrs (oa: {
+            plugins = [
+              pkgs.nodePackages."@tailwindcss/aspect-ratio"
+              pkgs.nodePackages."@tailwindcss/forms"
+              pkgs.nodePackages."@tailwindcss/language-server"
+              pkgs.nodePackages."@tailwindcss/line-clamp"
+              pkgs.nodePackages."@tailwindcss/typography"
+              daisyui
+            ];
+          });
+
+          nativeBuildInputs = with pkgs; [ rustToolchain pkg-config tailwindCss ];
+
           cargoLeptos = pkgs.rustPlatform.buildRustPackage rec {
             pname = "cargo-leptos";
             version = "0.2.16";
@@ -35,7 +72,8 @@
 
             doCheck = false;
           };
-          buildInputs = with pkgs; [ rust-analyzer cargoLeptos openssl mold clang tailwindcss ];
+
+          buildInputs = with pkgs; [ rust-analyzer cargoLeptos openssl mold clang ];
         in
         with pkgs;
         {
